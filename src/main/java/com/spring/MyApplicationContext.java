@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +40,16 @@ public class MyApplicationContext {
         Object instance = null;
         try {
             instance = aClass.getDeclaredConstructor().newInstance();
+            //依赖注入 对属性进行赋值
+            for (Field declaredField : aClass.getDeclaredFields()) {
+                if (declaredField.isAnnotationPresent(Autowired.class)) {
+                    //给这个对象中对这个属性去赋值
+                    Object bean = getBean(declaredField.getName());
+                    //开启权限
+                    declaredField.setAccessible(true);
+                    declaredField.set(instance, bean);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
