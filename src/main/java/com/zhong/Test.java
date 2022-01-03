@@ -9,6 +9,7 @@ public class Test {
         MyApplicationContext myApplicationContext = new MyApplicationContext(AppConfig.class);
         UserService userService01 =(UserService)myApplicationContext.getBean("userService");
         userService01.test();
+
     }
 
 }

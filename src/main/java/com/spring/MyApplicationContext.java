@@ -28,19 +28,19 @@ public class MyApplicationContext {
         for (Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
             if (entry.getValue().getScope().equals("singleton")) {
                 //创建单例bean对象
-                Object bean = createBean(entry.getValue());
+                Object bean = createBean(entry.getKey(), entry.getValue());
                 singletonObjects.put(entry.getKey(), bean);
             }
         }
 
     }
 
-    public Object createBean(BeanDefinition beanDefinition) {
+    public Object createBean(String beanName, BeanDefinition beanDefinition) {
         Class aClass = beanDefinition.getAClass();
         Object instance = null;
         try {
             instance = aClass.getDeclaredConstructor().newInstance();
-            //依赖注入 对属性进行赋值
+            //TODO 1.依赖注入 对属性进行赋值
             for (Field declaredField : aClass.getDeclaredFields()) {
                 if (declaredField.isAnnotationPresent(Autowired.class)) {
                     //给这个对象中对这个属性去赋值
@@ -50,6 +50,15 @@ public class MyApplicationContext {
                     declaredField.set(instance, bean);
                 }
             }
+            //TODO 2.aware回调
+            if (instance instanceof BeanNameAware) {
+                ((BeanNameAware) instance).setBeanName(beanName);
+            }
+            //TODO 3.初始化
+           if (instance instanceof InitializingBean){
+               ((InitializingBean)instance).afterPropertiesSet();
+           }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,7 +115,7 @@ public class MyApplicationContext {
                 return singletonObjects.get(beanName);
             } else {
                 //创建bean对象
-                return createBean(beanDefinition);
+                return createBean(beanName, beanDefinition);
             }
         } else {
             throw new RuntimeException("不存在这个bean：" + beanName);
