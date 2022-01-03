@@ -14,9 +14,16 @@ public class UserService implements BeanNameAware {
 
     private String beanName;
 
+    private String name;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void test() {
         System.out.println(orderService);
         System.out.println(beanName);
+        System.out.println(name);
     }
 
     @Override

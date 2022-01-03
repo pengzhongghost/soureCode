@@ -1,11 +1,14 @@
 package com.spring;
 
+import com.spring.beanpostprocessor.BeanPostProcessor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +21,7 @@ public class MyApplicationContext {
     //单例池
     private ConcurrentHashMap<String, Object> singletonObjects = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+    private List<BeanPostProcessor> beanPostProcessorList = new ArrayList<>();
 
     public MyApplicationContext(Class config) {
         this.config = config;
@@ -39,6 +43,12 @@ public class MyApplicationContext {
         Class aClass = beanDefinition.getAClass();
         Object instance = null;
         try {
+            //todo 4.beanpostprocessor前置处理
+            //当前class是否实现了该接口
+            if (BeanPostProcessor.class.isAssignableFrom(aClass)) {
+                BeanPostProcessor beanPostProcessor = (BeanPostProcessor) aClass.getDeclaredConstructor().newInstance();
+                beanPostProcessorList.add(beanPostProcessor);
+            }
             instance = aClass.getDeclaredConstructor().newInstance();
             //TODO 1.依赖注入 对属性进行赋值
             for (Field declaredField : aClass.getDeclaredFields()) {
@@ -54,10 +64,19 @@ public class MyApplicationContext {
             if (instance instanceof BeanNameAware) {
                 ((BeanNameAware) instance).setBeanName(beanName);
             }
+            //todo 4.初始化前处理
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                instance = beanPostProcessor.postProcessBeforeInitialization(instance, beanName);
+            }
             //TODO 3.初始化
-           if (instance instanceof InitializingBean){
-               ((InitializingBean)instance).afterPropertiesSet();
-           }
+            if (instance instanceof InitializingBean) {
+                ((InitializingBean) instance).afterPropertiesSet();
+            }
+            //TODO 4.beanpostprocessor前后置处理
+            //todo 4.初始化后处理
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                instance = beanPostProcessor.postProcessAfterInitialization(instance, beanName);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
