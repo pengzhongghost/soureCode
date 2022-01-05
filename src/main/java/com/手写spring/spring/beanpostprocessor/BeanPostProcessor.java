@@ -1,4 +1,4 @@
-package com.spring.beanpostprocessor;
+package com.手写spring.spring.beanpostprocessor;
 
 public interface BeanPostProcessor {
 

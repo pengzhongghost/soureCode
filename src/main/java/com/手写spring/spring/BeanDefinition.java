@@ -1,4 +1,4 @@
-package com.spring;
+package com.手写spring.spring;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

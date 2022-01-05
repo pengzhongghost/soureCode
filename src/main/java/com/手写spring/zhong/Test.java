@@ -1,7 +1,7 @@
-package com.zhong;
+package com.手写spring.zhong;
 
-import com.spring.MyApplicationContext;
-import com.zhong.service.UserService;
+import com.手写spring.spring.MyApplicationContext;
+import com.手写spring.zhong.service.UserService;
 
 public class Test {
 

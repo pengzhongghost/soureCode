@@ -1,7 +1,7 @@
-package com.zhong.service;
+package com.手写spring.zhong.service;
 
-import com.spring.Component;
-import com.spring.beanpostprocessor.BeanPostProcessor;
+import com.手写spring.spring.Component;
+import com.手写spring.spring.beanpostprocessor.BeanPostProcessor;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

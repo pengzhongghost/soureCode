@@ -1,8 +1,8 @@
-package com.zhong.service;
+package com.手写spring.zhong.service;
 
-import com.spring.Autowired;
-import com.spring.Component;
-import com.spring.Scope;
+import com.手写spring.spring.Autowired;
+import com.手写spring.spring.Component;
+import com.手写spring.spring.Scope;
 
 @Component("userService")
 @Scope("prototype")
