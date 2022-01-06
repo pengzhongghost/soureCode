@@ -1,0 +1,8 @@
+<mapper namespace="com.手写mybatis.mapper.StudentMapper">
+    <insert id="saveStudent" paramType="com.手写mybatis.pojo.Student">
+        insert into student values(?,?,?,?)
+    </insert>
+    <select id="findStudent" resultType="com.手写mybatis.pojo.Student" paramType="java.lang.Long">
+        select * from user where id = ?
+    </select>
+</mapper>
