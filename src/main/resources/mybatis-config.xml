@@ -1,4 +1,5 @@
 <mybatis>
     <dataSource>druid</dataSource>
     <mapper>mapper/StudentMapper.xml</mapper>
+    <mapper>mapper/UserMapper.xml</mapper>
 </mybatis>

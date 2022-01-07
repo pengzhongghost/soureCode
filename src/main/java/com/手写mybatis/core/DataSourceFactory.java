@@ -1,4 +1,4 @@
-package com.手写mybatis;
+package com.手写mybatis.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.zaxxer.hikari.HikariConfig;
